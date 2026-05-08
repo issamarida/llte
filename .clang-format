@@ -1,0 +1,82 @@
+---
+# LLTE clang-format configuration.
+#
+# Formatting is mechanical. There is no debate over formatting in review:
+# run clang-format and the result is correct by definition.
+#
+# Run on changed files:
+#   clang-format -i $(git diff --name-only --diff-filter=ACM | grep -E '\.(hpp|cpp)$')
+#
+# Run on the whole tree:
+#   find include src tests benches -name '*.hpp' -o -name '*.cpp' | xargs clang-format -i
+
+BasedOnStyle: Google
+Language: Cpp
+Standard: c++20
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+NamespaceIndentation: None
+AccessModifierOffset: -4
+
+# Line length
+ColumnLimit: 100
+ReflowComments: true
+
+# Pointers and references: type-attached (modern style)
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+# Braces
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortBlocksOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortLambdasOnASingleLine: All
+
+# Spacing
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpaceInEmptyParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInAngles: Never
+
+# Includes - regroup into blocks: this header, project, third-party, system
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^"llte/'
+    Priority:        1
+  - Regex:           '^<llte/'
+    Priority:        1
+  - Regex:           '^<catch2/'
+    Priority:        2
+  - Regex:           '^<benchmark/'
+    Priority:        2
+  - Regex:           '^<.*\.hpp>'
+    Priority:        3
+  - Regex:           '^<.*>'
+    Priority:        4
+
+# Alignment - we like aligned trailing comments and consecutive decls
+# but not aligned operators (it tends to thrash on small edits)
+AlignTrailingComments: true
+AlignConsecutiveAssignments: AcrossEmptyLines
+AlignConsecutiveDeclarations: false
+AlignAfterOpenBracket: Align
+AlignOperands: Align
+
+# Misc
+FixNamespaceComments: true
+ShortNamespaceLines: 0
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+SeparateDefinitionBlocks: Always
